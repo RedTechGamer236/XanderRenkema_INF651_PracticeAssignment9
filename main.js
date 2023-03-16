@@ -1,15 +1,13 @@
 /* Practice Assignment 9:
-
 Complete this javascript file according to the individual instructions
 given in the comments. 
-
 *** DO NOT CHANGE any of the code that you are not instructed to. */
 
 // 1) Fix the syntax error. Use the dev tools console in your 
 // browser to help identify the error and line number.
 
 function sum(x, y) {
-  return x, y;
+  return x + y;
 };
 
 sum(2, 2);
@@ -18,7 +16,7 @@ sum(2, 2);
 // browser to help identify the error and line number. 
 // Do not change the name of the function.
 
-function allCaps(string) { return string.ToUpperCase() };
+function allCaps(string) { return string.toUpperCase() };
 
 allCaps("hello");
 
@@ -26,7 +24,7 @@ allCaps("hello");
 // browser to help identify the error and line number. 
 
 function revSentence(string) {
-  const newSentence = string.Split(' ').reverse().join(' ').toLowerCase();
+  const newSentence = string.split(' ').reverse().join(' ').toLowerCase();
   return newSentence[0].toUpperCase() + newSentence.slice(1);
 }
 
@@ -41,7 +39,7 @@ const arrayOfNums = [10, 20, 27];
 function getTotal(array) {
   let total = 0;
   for (let i = 0; i < array.length; i++) {
-    total = array[i];
+    total += array[i];
   }
   return total;
 }
@@ -57,7 +55,7 @@ const numArray = [2, 5, 7, 8, 14, 19, 22];
 function getEvens(array) {
   const newArray = [];
   for (let i = 0; i < array.length; i++) {
-    if (array[i] / 2) newArray.push(array[i]);
+    if (array[i] % 2 === 0) newArray.push(array[i]);
   }
   return newArray;
 }
@@ -79,8 +77,8 @@ const arrayOfObjs = [
 
 function getObjOdds(array) {
   const newArray = [];
-  for (obj in array) {
-    newArray.push(array[obj] % 2 !== 0);
+  for (let obj = 0; obj < array.length; obj++) {
+    if(array[obj].number % 2 !== 0) newArray.push(array[obj].number);
   }
   return newArray;
 }
@@ -94,7 +92,13 @@ getObjOdds(arrayOfObjs);
 // and stack properties. The stack property should 
 // combine the name and message properties in a 
 // string. (Example: err.name: err.message)
-
+class notStringError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "notStringError";
+    this.stack = this.name + ": " + this.message;
+  }
+}
 
 
 // 8) Create a function named joinAlpha that accepts 
@@ -118,3 +122,20 @@ const eightArray = ['ABC', 'DEF', 2003, 'GHI'];
 // Caution: Watch out for an undefined value!
 ///////// Do not change the above array /////////
 
+function joinAlpha(array) {
+  let combined = "";
+  for(let i = 0; i < array.length; i++) {
+    try {
+      if(typeof array[i] !== "string") 
+        throw new notStringError("Not a string!");
+    } catch(err) {
+      console.error(err.stack);
+    } finally {
+      if(typeof array[i] === "string") {
+        if(array[i] === 0) combined = array[i];
+        else combined = combined + array[i];
+      }
+    }
+  }
+  return combined;
+}
